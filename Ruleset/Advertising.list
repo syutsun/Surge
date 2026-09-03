@@ -100,6 +100,7 @@ DOMAIN-SUFFIX,adform.net
 DOMAIN-SUFFIX,adinall.com
 DOMAIN-SUFFIX,adintl.cn
 DOMAIN-SUFFIX,adkernel.com
+DOMAIN-SUFFIX,adkwai.com
 DOMAIN-SUFFIX,ad-locus.com
 DOMAIN-SUFFIX,adlooxtracking.com
 DOMAIN-SUFFIX,admarvel.com
@@ -107,6 +108,7 @@ DOMAIN-SUFFIX,admaster.com.cn
 DOMAIN-SUFFIX,ad-maven.com
 DOMAIN-SUFFIX,admicro.vn
 DOMAIN-SUFFIX,admob.com
+DOMAIN-SUFFIX,admobile.top
 DOMAIN-SUFFIX,ad-move.jp
 DOMAIN-SUFFIX,adnetwork.vn
 DOMAIN-SUFFIX,adnxs.com
@@ -139,6 +141,7 @@ DOMAIN-SUFFIX,adtongji.xyz
 DOMAIN-SUFFIX,adtongji.xyz
 DOMAIN-SUFFIX,adtrace.org
 DOMAIN-SUFFIX,advertising.com
+DOMAIN-SUFFIX,advlion.com
 DOMAIN-SUFFIX,adwhirl.com
 DOMAIN-SUFFIX,adwo.com
 DOMAIN-SUFFIX,adxadserv.com
@@ -213,6 +216,7 @@ DOMAIN-SUFFIX,echatu.com
 DOMAIN-SUFFIX,erdoscs.com
 DOMAIN-SUFFIX,eroadvertising.com
 DOMAIN-SUFFIX,ero-advertising.com
+DOMAIN-SUFFIX,etoolads.cn
 DOMAIN-SUFFIX,exdynsrv.com
 DOMAIN-SUFFIX,exoclick.com
 DOMAIN-SUFFIX,exosrv.com
@@ -386,6 +390,7 @@ DOMAIN-SUFFIX,quantserve.com
 DOMAIN-SUFFIX,quantumgraph.com
 DOMAIN-SUFFIX,qutaobi.com
 DOMAIN-SUFFIX,r-ad.ne.jp
+DOMAIN-SUFFIX,ranfenghd.com
 DOMAIN-SUFFIX,rayjump.com
 DOMAIN-SUFFIX,reachmax.cn
 DOMAIN-SUFFIX,realsrv.com
@@ -510,11 +515,13 @@ DOMAIN-SUFFIX,theadex.com
 DOMAIN-SUFFIX,themoneytizer.com
 DOMAIN-SUFFIX,theoremreach.com
 DOMAIN-SUFFIX,thetrafficstat.net
+DOMAIN-SUFFIX,tianmu.mobi
 DOMAIN-SUFFIX,tidaltv.com
 DOMAIN-SUFFIX,tjqonline.cn
 DOMAIN-SUFFIX,tnkfactory.com
 DOMAIN-SUFFIX,tns-counter.ru
 DOMAIN-SUFFIX,topitme.com
+DOMAIN-SUFFIX,touch-moblie.com
 DOMAIN-SUFFIX,tradplusad.com
 DOMAIN-SUFFIX,traffichunt.com
 DOMAIN-SUFFIX,trafficjunky.net
@@ -539,6 +546,7 @@ DOMAIN-SUFFIX,tutoads.tv
 DOMAIN-SUFFIX,tynt.com
 DOMAIN-SUFFIX,u-ad.info
 DOMAIN-SUFFIX,uberads.com
+DOMAIN-SUFFIX,ubixioe.com
 DOMAIN-SUFFIX,uimserv.net
 DOMAIN-SUFFIX,ultraadserver.com
 DOMAIN-SUFFIX,undertone.com
@@ -569,6 +577,7 @@ DOMAIN-SUFFIX,videozhishi.com
 DOMAIN-SUFFIX,vidoomy.com
 DOMAIN-SUFFIX,viewdeos.com
 DOMAIN-SUFFIX,vi-serve.com
+DOMAIN-SUFFIX,vlion.cn
 DOMAIN-SUFFIX,vm5apis.com
 DOMAIN-SUFFIX,voiceads.cn
 DOMAIN-SUFFIX,voodoo-ads.io
@@ -595,6 +604,7 @@ DOMAIN-SUFFIX,wx16999.com
 DOMAIN-SUFFIX,xapads.com
 DOMAIN-SUFFIX,xchmai.com
 DOMAIN-SUFFIX,xdrig.com
+DOMAIN-SUFFIX,xdrun.com
 DOMAIN-SUFFIX,xiaohuau.xyz
 DOMAIN-SUFFIX,xlviirdr.com
 DOMAIN-SUFFIX,xmlwizard.com
@@ -624,10 +634,12 @@ DOMAIN-SUFFIX,youmi.net
 DOMAIN-SUFFIX,yukhj.com
 DOMAIN-SUFFIX,yumimobi.com
 DOMAIN-SUFFIX,yunqingugm.com
+DOMAIN-SUFFIX,yunxish.com
 DOMAIN-SUFFIX,zapr.in
 DOMAIN-SUFFIX,zemanta.com
 DOMAIN-SUFFIX,zestads.com
 DOMAIN-SUFFIX,zeustechnology.com
+DOMAIN-SUFFIX,zhangyuyidong.cn
 DOMAIN-SUFFIX,zhaozecheng.cn
 DOMAIN-SUFFIX,zhenxinet.com
 DOMAIN-SUFFIX,zhiziyun.com
@@ -765,6 +777,7 @@ IP-CIDR,101.227.200.28/32,no-resolve
 IP-CIDR,124.192.153.42/32,no-resolve
 # ------
 # > ByteDance
+DOMAIN-SUFFIX,pangolin-dsp-toutiao.com
 DOMAIN-SUFFIX,pangolin-sdk-toutiao.com
 DOMAIN-SUFFIX,pangolin-sdk-toutiao1.com
 DOMAIN-SUFFIX,pangolin-sdk-toutiao-b.com
@@ -948,10 +961,12 @@ DOMAIN-SUFFIX,alitui.weibo.com
 DOMAIN-SUFFIX,beacon.sina.com.cn
 DOMAIN,adimg.uve.weibo.com
 DOMAIN,adimg.vue.weibo.com
-DOMAIN,u1.img.mobile.sina.cn
+DOMAIN,adstrategy.biz.weibo.com
+DOMAIN,bootpreload.uve.weibo.com
 DOMAIN,sax.sina.com.cn
-DOMAIN,saxs.sina.com.cn
 DOMAIN,saxn.sina.com.cn
+DOMAIN,saxs.sina.com.cn
+DOMAIN,u1.img.mobile.sina.cn
 # > SOHU
 DOMAIN-SUFFIX,ad.sohu.com
 DOMAIN-SUFFIX,ads.sohu.com
@@ -1058,14 +1073,6 @@ DOMAIN,ads.yahoo.com
 DOMAIN,ads.yahoo.de
 
 # (Z)
-# > Zhihu
-USER-AGENT,AVOS*
-DOMAIN,appcloud2.in.zhihu.com
-DOMAIN,mqtt.zhihu.com
-DOMAIN,sugar.zhihu.com
-DOMAIN,118.89.204.198
-IP-CIDR,118.89.204.198/32,no-resolve
-IP-CIDR6,2402:4e00:1200:ed00:0:9089:6dac:96b6/128,no-resolve
 # > ZOL
 DOMAIN,apppv.zol.com.cn
 DOMAIN,pvnapp.zol.com.cn
