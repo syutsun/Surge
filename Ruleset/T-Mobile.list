@@ -1,0 +1,19 @@
+# > T-Mobile
+
+# T-Mobile 主域名
+DOMAIN-SUFFIX,t-mobile.com
+
+# T-Mobile 页面资源
+DOMAIN,t-mobile.scene7.com
+
+# T-Mobile 第三方服务
+DOMAIN,cdn.moengage.com
+DOMAIN,sdk-101.moengage.com
+
+DOMAIN,tmobile.demdex.net
+DOMAIN,tmobile.sc.omtrdc.net
+DOMAIN,tmobile.tt.omtrdc.net
+
+DOMAIN,tmobilees.mpeasylink.com
+DOMAIN,solutions.invocacdn.com
+DOMAIN,d3nogy11zk4v1m.cloudfront.net
