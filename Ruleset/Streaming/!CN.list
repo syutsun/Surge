@@ -1,5 +1,4 @@
 # Streaming Media
-
 # (Live)
 # > Twitch
 DOMAIN-SUFFIX,ext-twitch.tv
@@ -30,10 +29,12 @@ DOMAIN-SUFFIX,soundcloud.com
 # > Spotify
 DOMAIN-SUFFIX,pscdn.co
 DOMAIN-SUFFIX,scdn.co
-DOMAIN-SUFFIX,spotify.com
 DOMAIN-SUFFIX,spoti.fi
+DOMAIN-SUFFIX,spotify.com
+DOMAIN-SUFFIX,spotifycdn.com
+DOMAIN-SUFFIX,spotifycdn.net
+DOMAIN-KEYWORD,-spotify-
 DOMAIN-KEYWORD,spotify.com
-DOMAIN-KEYWORD,-spotify-com
 # > TIDAL
 DOMAIN-SUFFIX,tidal.com
 # > YouTubeMusic
@@ -284,7 +285,10 @@ DOMAIN-SUFFIX,peacocktv.com
 # > Pornhub
 DOMAIN-SUFFIX,phncdn.com
 DOMAIN-SUFFIX,phprcdn.com
+DOMAIN-SUFFIX,porngub.com
+DOMAIN-SUFFIX,pornhub-deutsch.net
 DOMAIN-SUFFIX,pornhub.com
+DOMAIN-SUFFIX,pornhubapparel.com
 DOMAIN-SUFFIX,pornhubpremium.com
 # > 台湾好
 DOMAIN-SUFFIX,skyking.com.tw
@@ -292,15 +296,14 @@ DOMAIN,hamifans.emome.net
 # > TikTok
 DOMAIN-SUFFIX,byteoversea.com
 DOMAIN-SUFFIX,ibytedtos.com
+DOMAIN-SUFFIX,ipstatp.com
 DOMAIN-SUFFIX,muscdn.com
 DOMAIN-SUFFIX,musical.ly
-DOMAIN-SUFFIX,tiktok.com
 DOMAIN-SUFFIX,tik-tokapi.com
+DOMAIN-SUFFIX,tiktok.com
 DOMAIN-SUFFIX,tiktokcdn.com
-DOMAIN-SUFFIX,tiktokcdn-eu.com
 DOMAIN-SUFFIX,tiktokv.com
-DOMAIN-SUFFIX,ttwstatic.com
-DOMAIN-KEYWORD,tiktokcdn-
+DOMAIN-KEYWORD,tiktok
 # > TVer
 DOMAIN-SUFFIX,tver.jp
 DOMAIN,edge.api.brightcove.com
@@ -318,15 +321,17 @@ DOMAIN-SUFFIX,wetv.vip
 DOMAIN-SUFFIX,wetvinfo.com
 IP-CIDR,150.109.28.51/32,no-resolve
 # > YouTube
+DOMAIN,youtubei.googleapis.com
+DOMAIN,yt3.ggpht.com
 DOMAIN-SUFFIX,googlevideo.com
+DOMAIN-SUFFIX,gvt2.com
 DOMAIN-SUFFIX,withyoutube.com
 DOMAIN-SUFFIX,youtu.be
+DOMAIN-SUFFIX,youtube-nocookie.com
 DOMAIN-SUFFIX,youtube.com
 DOMAIN-SUFFIX,youtubeeducation.com
 DOMAIN-SUFFIX,youtubegaming.com
 DOMAIN-SUFFIX,youtubekids.com
-DOMAIN-SUFFIX,youtube-nocookie.com
 DOMAIN-SUFFIX,yt.be
 DOMAIN-SUFFIX,ytimg.com
-DOMAIN,youtubei.googleapis.com
-DOMAIN,yt3.ggpht.com
+DOMAIN-KEYWORD,youtube
