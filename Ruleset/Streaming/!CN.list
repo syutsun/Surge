@@ -117,12 +117,26 @@ DOMAIN-SUFFIX,dnitv.com
 DOMAIN,x-default-stgec.uplynk.com
 DOMAIN-KEYWORD,discovery.uplynk.com
 # > Disney+
+DOMAIN,cdn.registerdisney.go.com
+DOMAIN-SUFFIX,adobedtm.com
+DOMAIN-SUFFIX,bam.nr-data.net
 DOMAIN-SUFFIX,bamgrid.com
-DOMAIN-SUFFIX,disneyplus.com
+DOMAIN-SUFFIX,braze.com
+DOMAIN-SUFFIX,cdn.optimizely.com
+DOMAIN-SUFFIX,cdn.registerdisney.go.com
+DOMAIN-SUFFIX,cws.conviva.com
+DOMAIN-SUFFIX,d9.flashtalking.com
 DOMAIN-SUFFIX,disney-plus.net
+DOMAIN-SUFFIX,disney-portal.my.onetrust.com
+DOMAIN-SUFFIX,disney.demdex.net
+DOMAIN-SUFFIX,disney.my.sentry.io
+DOMAIN-SUFFIX,disneyplus.bn5x.net
+DOMAIN-SUFFIX,disneyplus.com
+DOMAIN-SUFFIX,disneyplus.com.ssl.sc.omtrdc.net
 DOMAIN-SUFFIX,disneystreaming.com
 DOMAIN-SUFFIX,dssott.com
-DOMAIN,cdn.registerdisney.go.com
+DOMAIN-SUFFIX,execute-api.us-east-1.amazonaws.com
+DOMAIN-SUFFIX,js-agent.newrelic.com
 # > DMM
 DOMAIN-SUFFIX,dmm.co.jp
 DOMAIN-SUFFIX,dmm.com
@@ -137,9 +151,6 @@ DOMAIN-SUFFIX,hamivideo.hinet.net
 DOMAIN,hls-hichannel.cdn.hinet.net
 DOMAIN-KEYWORD,hamivideo.cdn.hinet.net
 # > HBO Asia
-DOMAIN-SUFFIX,hbogoasia.com
-DOMAIN-SUFFIX,hbogoasia.hk
-DOMAIN-KEYWORD,.hbogoasia.
 DOMAIN,44wilhpljf.execute-api.ap-southeast-1.amazonaws.com
 DOMAIN,bcbolthboa-a.akamaihd.net
 DOMAIN,cf-images.ap-southeast-1.prod.boltdns.net
@@ -155,6 +166,10 @@ DOMAIN,hbolb.onwardsmg.com
 DOMAIN,hbounify-prod.evergent.com
 DOMAIN,players.brightcove.net
 DOMAIN,s3-ap-southeast-1.amazonaws.com
+DOMAIN-SUFFIX,hboasia.com
+DOMAIN-SUFFIX,hbogoasia.com
+DOMAIN-SUFFIX,hbogoasia.hk
+DOMAIN-KEYWORD,hbogoasia
 # > 华文电视
 DOMAIN-SUFFIX,5itv.tv
 DOMAIN-SUFFIX,ocnttv.com
@@ -202,14 +217,12 @@ DOMAIN,d3c7rimkq79yfu.cloudfront.net
 # > LiTV
 DOMAIN-SUFFIX,litv.tv
 DOMAIN,litvfreemobile-hichannel.cdn.hinet.net
-# > Max
-DOMAIN-SUFFIX,discomax.com
+# > HBO
 DOMAIN-SUFFIX,hbo.com
 DOMAIN-SUFFIX,hbogo.com
 DOMAIN-SUFFIX,hbomax.com
 DOMAIN-SUFFIX,hbomaxcdn.com
 DOMAIN-SUFFIX,hbonow.com
-DOMAIN-SUFFIX,max.com
 # > My5
 DOMAIN-SUFFIX,channel5.com
 DOMAIN-SUFFIX,my5.tv
