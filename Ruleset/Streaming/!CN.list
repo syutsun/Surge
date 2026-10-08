@@ -1,4 +1,5 @@
 # Streaming Media
+
 # (Live)
 # > Twitch
 DOMAIN-SUFFIX,ext-twitch.tv
@@ -29,12 +30,10 @@ DOMAIN-SUFFIX,soundcloud.com
 # > Spotify
 DOMAIN-SUFFIX,pscdn.co
 DOMAIN-SUFFIX,scdn.co
-DOMAIN-SUFFIX,spoti.fi
 DOMAIN-SUFFIX,spotify.com
-DOMAIN-SUFFIX,spotifycdn.com
-DOMAIN-SUFFIX,spotifycdn.net
-DOMAIN-KEYWORD,-spotify-
+DOMAIN-SUFFIX,spoti.fi
 DOMAIN-KEYWORD,spotify.com
+DOMAIN-KEYWORD,-spotify-com
 # > TIDAL
 DOMAIN-SUFFIX,tidal.com
 # > YouTubeMusic
@@ -117,26 +116,12 @@ DOMAIN-SUFFIX,dnitv.com
 DOMAIN,x-default-stgec.uplynk.com
 DOMAIN-KEYWORD,discovery.uplynk.com
 # > Disney+
-DOMAIN,cdn.registerdisney.go.com
-DOMAIN-SUFFIX,adobedtm.com
-DOMAIN-SUFFIX,bam.nr-data.net
 DOMAIN-SUFFIX,bamgrid.com
-DOMAIN-SUFFIX,braze.com
-DOMAIN-SUFFIX,cdn.optimizely.com
-DOMAIN-SUFFIX,cdn.registerdisney.go.com
-DOMAIN-SUFFIX,cws.conviva.com
-DOMAIN-SUFFIX,d9.flashtalking.com
-DOMAIN-SUFFIX,disney-plus.net
-DOMAIN-SUFFIX,disney-portal.my.onetrust.com
-DOMAIN-SUFFIX,disney.demdex.net
-DOMAIN-SUFFIX,disney.my.sentry.io
-DOMAIN-SUFFIX,disneyplus.bn5x.net
 DOMAIN-SUFFIX,disneyplus.com
-DOMAIN-SUFFIX,disneyplus.com.ssl.sc.omtrdc.net
+DOMAIN-SUFFIX,disney-plus.net
 DOMAIN-SUFFIX,disneystreaming.com
 DOMAIN-SUFFIX,dssott.com
-DOMAIN-SUFFIX,execute-api.us-east-1.amazonaws.com
-DOMAIN-SUFFIX,js-agent.newrelic.com
+DOMAIN,cdn.registerdisney.go.com
 # > DMM
 DOMAIN-SUFFIX,dmm.co.jp
 DOMAIN-SUFFIX,dmm.com
@@ -151,6 +136,9 @@ DOMAIN-SUFFIX,hamivideo.hinet.net
 DOMAIN,hls-hichannel.cdn.hinet.net
 DOMAIN-KEYWORD,hamivideo.cdn.hinet.net
 # > HBO Asia
+DOMAIN-SUFFIX,hbogoasia.com
+DOMAIN-SUFFIX,hbogoasia.hk
+DOMAIN-KEYWORD,.hbogoasia.
 DOMAIN,44wilhpljf.execute-api.ap-southeast-1.amazonaws.com
 DOMAIN,bcbolthboa-a.akamaihd.net
 DOMAIN,cf-images.ap-southeast-1.prod.boltdns.net
@@ -166,10 +154,6 @@ DOMAIN,hbolb.onwardsmg.com
 DOMAIN,hbounify-prod.evergent.com
 DOMAIN,players.brightcove.net
 DOMAIN,s3-ap-southeast-1.amazonaws.com
-DOMAIN-SUFFIX,hboasia.com
-DOMAIN-SUFFIX,hbogoasia.com
-DOMAIN-SUFFIX,hbogoasia.hk
-DOMAIN-KEYWORD,hbogoasia
 # > 华文电视
 DOMAIN-SUFFIX,5itv.tv
 DOMAIN-SUFFIX,ocnttv.com
@@ -217,12 +201,14 @@ DOMAIN,d3c7rimkq79yfu.cloudfront.net
 # > LiTV
 DOMAIN-SUFFIX,litv.tv
 DOMAIN,litvfreemobile-hichannel.cdn.hinet.net
-# > HBO
+# > Max
+DOMAIN-SUFFIX,discomax.com
 DOMAIN-SUFFIX,hbo.com
 DOMAIN-SUFFIX,hbogo.com
 DOMAIN-SUFFIX,hbomax.com
 DOMAIN-SUFFIX,hbomaxcdn.com
 DOMAIN-SUFFIX,hbonow.com
+DOMAIN-SUFFIX,max.com
 # > My5
 DOMAIN-SUFFIX,channel5.com
 DOMAIN-SUFFIX,my5.tv
@@ -234,46 +220,18 @@ DOMAIN-SUFFIX,tvb.com
 DOMAIN-SUFFIX,naver.com
 DOMAIN-SUFFIX,smartmediarep.com
 # > Netflix
-DOMAIN,netflix.com.edgesuite.net
 DOMAIN-SUFFIX,fast.com
 DOMAIN-SUFFIX,netflix.com
 DOMAIN-SUFFIX,netflix.net
-DOMAIN-SUFFIX,netflixdnstest0.com
-DOMAIN-SUFFIX,netflixdnstest1.com
-DOMAIN-SUFFIX,netflixdnstest2.com
-DOMAIN-SUFFIX,netflixdnstest3.com
-DOMAIN-SUFFIX,netflixdnstest4.com
-DOMAIN-SUFFIX,netflixdnstest5.com
-DOMAIN-SUFFIX,netflixdnstest6.com
-DOMAIN-SUFFIX,netflixdnstest7.com
-DOMAIN-SUFFIX,netflixdnstest8.com
-DOMAIN-SUFFIX,netflixdnstest9.com
 DOMAIN-SUFFIX,nflxext.com
 DOMAIN-SUFFIX,nflximg.com
 DOMAIN-SUFFIX,nflximg.net
 DOMAIN-SUFFIX,nflxso.net
 DOMAIN-SUFFIX,nflxvideo.net
+DOMAIN-KEYWORD,netflixdnstest
 DOMAIN-KEYWORD,apiproxy-device-prod-nlb-
 DOMAIN-KEYWORD,dualstack.apiproxy-
-DOMAIN-KEYWORD,netflixdnstest
-IP-CIDR,103.87.204.0/22,no-resolve
-IP-CIDR,108.175.32.0/20,no-resolve
-IP-CIDR,185.2.220.0/22,no-resolve
-IP-CIDR,185.9.188.0/22,no-resolve
-IP-CIDR,192.173.64.0/18,no-resolve
-IP-CIDR,198.38.96.0/19,no-resolve
-IP-CIDR,198.45.48.0/20,no-resolve
-IP-CIDR,203.75.84.0/24,no-resolve
-IP-CIDR,207.45.72.0/22,no-resolve
-IP-CIDR,208.75.76.0/22,no-resolve
-IP-CIDR,23.246.0.0/18,no-resolve
-IP-CIDR,37.77.184.0/21,no-resolve
-IP-CIDR,38.72.126.0/24,no-resolve
-IP-CIDR,45.57.0.0/17,no-resolve
-IP-CIDR,64.120.128.0/17,no-resolve
-IP-CIDR,66.197.128.0/17,no-resolve
-IP-CIDR,69.53.224.0/19,no-resolve
-IP-CIDR,8.41.4.0/24,no-resolve
+GEOIP,NETFLIX,no-resolve
 # > niconico
 DOMAIN-SUFFIX,dmc.nico
 DOMAIN-SUFFIX,nicovideo.jp
@@ -298,10 +256,7 @@ DOMAIN-SUFFIX,peacocktv.com
 # > Pornhub
 DOMAIN-SUFFIX,phncdn.com
 DOMAIN-SUFFIX,phprcdn.com
-DOMAIN-SUFFIX,porngub.com
-DOMAIN-SUFFIX,pornhub-deutsch.net
 DOMAIN-SUFFIX,pornhub.com
-DOMAIN-SUFFIX,pornhubapparel.com
 DOMAIN-SUFFIX,pornhubpremium.com
 # > 台湾好
 DOMAIN-SUFFIX,skyking.com.tw
@@ -309,14 +264,15 @@ DOMAIN,hamifans.emome.net
 # > TikTok
 DOMAIN-SUFFIX,byteoversea.com
 DOMAIN-SUFFIX,ibytedtos.com
-DOMAIN-SUFFIX,ipstatp.com
 DOMAIN-SUFFIX,muscdn.com
 DOMAIN-SUFFIX,musical.ly
-DOMAIN-SUFFIX,tik-tokapi.com
 DOMAIN-SUFFIX,tiktok.com
+DOMAIN-SUFFIX,tik-tokapi.com
 DOMAIN-SUFFIX,tiktokcdn.com
+DOMAIN-SUFFIX,tiktokcdn-eu.com
 DOMAIN-SUFFIX,tiktokv.com
-DOMAIN-KEYWORD,tiktok
+DOMAIN-SUFFIX,ttwstatic.com
+DOMAIN-KEYWORD,tiktokcdn-
 # > TVer
 DOMAIN-SUFFIX,tver.jp
 DOMAIN,edge.api.brightcove.com
@@ -334,17 +290,15 @@ DOMAIN-SUFFIX,wetv.vip
 DOMAIN-SUFFIX,wetvinfo.com
 IP-CIDR,150.109.28.51/32,no-resolve
 # > YouTube
-DOMAIN,youtubei.googleapis.com
-DOMAIN,yt3.ggpht.com
 DOMAIN-SUFFIX,googlevideo.com
-DOMAIN-SUFFIX,gvt2.com
 DOMAIN-SUFFIX,withyoutube.com
 DOMAIN-SUFFIX,youtu.be
-DOMAIN-SUFFIX,youtube-nocookie.com
 DOMAIN-SUFFIX,youtube.com
 DOMAIN-SUFFIX,youtubeeducation.com
 DOMAIN-SUFFIX,youtubegaming.com
 DOMAIN-SUFFIX,youtubekids.com
+DOMAIN-SUFFIX,youtube-nocookie.com
 DOMAIN-SUFFIX,yt.be
 DOMAIN-SUFFIX,ytimg.com
-DOMAIN-KEYWORD,youtube
+DOMAIN,youtubei.googleapis.com
+DOMAIN,yt3.ggpht.com
