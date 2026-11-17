@@ -4,7 +4,7 @@ import hashlib
 import ipaddress
 import urllib.request
 
-SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Reject/Apple.list"
+SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Apple/Apple.list"
 OUTPUT = Path("Ruleset/Apple.list")
 
 
