@@ -10,7 +10,7 @@ Surge「模块 → 安装新模块」粘贴该 URL 即可；开启 MITM 并安�
 
 ## 更新
 
-GitHub Actions 每 6 小时检查，计划时间为北京时间 02:23、08:23、14:23、20:23（GitHub 可能延迟）。
+GitHub Actions 每 24 小时检查，计划时间为北京时间每天 08:23（GitHub 可能延迟）。
 也可在 Actions → Update Moyu StartUpAds → Run workflow 手动运行。
 只有转换结果变化时才提交；每次保留上游 SHA-256，结果不含每次变化的构建时间。
 仓库生成最新模块后，Surge 仍需刷新该远程模块才能获取最新内容；仓库的定时任务不会向设备推送。
