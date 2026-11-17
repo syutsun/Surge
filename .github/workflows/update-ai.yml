@@ -1,0 +1,43 @@
+name: Update personal AI rules
+on:
+  schedule:
+    - cron: '23 0 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - config/AI-personal.list
+      - scripts/sync-ai.mjs
+      - scripts/test-sync-ai.mjs
+      - .github/workflows/update-ai.yml
+permissions:
+  contents: write
+# Serialize repository writers with the existing daily Moyu updater.
+concurrency:
+  group: update-moyu-startup-ads
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test section preservation
+        run: node --test scripts/test-sync-ai.mjs
+      - name: Sync upstream except personal sections
+        run: node scripts/sync-ai.mjs
+      - name: Commit changed rules
+        run: |
+          git diff --check -- Ruleset/AI.list
+          if git diff --quiet -- Ruleset/AI.list; then
+            echo "No rules changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- Ruleset/AI.list
+          git commit -m "chore: sync AI rules while preserving personal OpenAI and OpenRouter"
+          git push origin HEAD:main
