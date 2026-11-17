@@ -71,28 +71,64 @@ def merge_rules(upstream, personal):
     return result
 
 
-def main():
-    personal = PERSONAL.read_bytes().decode("utf-8")
+# Local filenames stay stable even when upstream renames a service.
+MIRRORS = {
+    "Disney+.list": ("Disney+.list", "# > Disney+"),
+    "HBO-Asia.list": ("HBO-Asia.list", "# > HBO Asia"),
+    "HBO.list": ("Max.list", "# > Max"),
+    "Netflix.list": ("Netflix.list", "# > Netflix"),
+    "TikTok.list": ("TikTok.list", "# > TikTok"),
+    "YouTube.list": ("YouTube.list", "# > YouTube"),
+}
+VIDEO_SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Video/"
+
+
+def build_outputs(upstream, personal, mirrors):
+    # Validate every download before writing any output.
+    outputs = {str(OUTPUT): merge_rules(upstream, personal).encode("utf-8")}
+    pstart, pend = spotify_span(personal)
+    if pstart != 0 or pend != len(personal):
+        raise ValueError("Personal Spotify scope mismatch")
+    validate_rules(personal, 1)
+    outputs["Ruleset/Streaming/Spotify.list"] = personal.encode("utf-8")
+    if set(mirrors) != set(MIRRORS):
+        raise ValueError("Missing or unexpected standalone mirror")
+    for local, (_, header) in MIRRORS.items():
+        data = mirrors[local]
+        text = data.decode("utf-8")
+        if text.splitlines()[0] != header:
+            raise ValueError("Wrong upstream service for " + local)
+        validate_rules(text, 1)
+        outputs["Ruleset/Streaming/" + local] = data
+    return outputs
+
+
+def download(url):
     last_error = None
     for attempt in range(3):
         try:
-            request = urllib.request.Request(SOURCE, headers={"User-Agent": "Surge"})
+            request = urllib.request.Request(url, headers={"User-Agent": "Surge"})
             with urllib.request.urlopen(request, timeout=30) as response:
-                data = response.read()
-            upstream = data.decode("utf-8")
-            result = merge_rules(upstream, personal)
-            break
+                return response.read()
         except Exception as error:
             last_error = error
-    else:
-        raise RuntimeError("Upstream sync failed") from last_error
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    temporary = OUTPUT.with_suffix(".list.tmp")
-    temporary.write_bytes(result.encode("utf-8"))
-    temporary.replace(OUTPUT)
-    print("Synced streaming rules:", validate_rules(result, 100))
-    print("Personal Spotify rules:", validate_rules(personal, 1))
-    print("Upstream SHA-256:", hashlib.sha256(data).hexdigest())
+    raise RuntimeError("Download failed: " + url) from last_error
+
+
+def main():
+    personal = PERSONAL.read_bytes().decode("utf-8")
+    data = download(SOURCE)
+    mirrors = {local: download(VIDEO_SOURCE + name) for local, (name, _) in MIRRORS.items()}
+    outputs = build_outputs(data.decode("utf-8"), personal, mirrors)
+    for name, content in outputs.items():
+        path = Path(name)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = path.with_suffix(".list.tmp")
+        temporary.write_bytes(content)
+        temporary.replace(path)
+        print(name, "rules:", validate_rules(content.decode("utf-8"), 1),
+              "SHA-256:", hashlib.sha256(content).hexdigest())
+    print("Upstream !CN SHA-256:", hashlib.sha256(data).hexdigest())
 
 
 if __name__ == "__main__":

@@ -21,3 +21,22 @@ Actions → Update personal Streaming rules → Run workflow 可手动运行。
 
 在 Surge 分流规则中替换原上游 URL，沿用原来的海外流媒体策略组。
 这是规则集，不是模块；Surge 按自己的规则集刷新设置获取仓库新版。
+
+
+## 独立规则同步范围
+
+以下现有订阅地址也在同一个每天 09:43 的任务中更新，文件名不变：
+
+| 本仓库文件 | 更新来源 |
+|---|---|
+| Disney+.list | RuleGo Video/Disney+.list，原样同步 |
+| HBO-Asia.list | RuleGo Video/HBO-Asia.list，原样同步 |
+| HBO.list | RuleGo Video/Max.list，原样同步；保留本地 HBO.list 文件名 |
+| Netflix.list | RuleGo Video/Netflix.list，原样同步 |
+| TikTok.list | RuleGo Video/TikTok.list，原样同步 |
+| YouTube.list | RuleGo Video/YouTube.list，原样同步 |
+| Spotify.list | config/Spotify-personal.list，与 !CN.list 中的个人分段一致 |
+
+六份上游文件不合并、不去重、不改规则和注释，保留原始字节。全部文件下载及校验通过后才写入、提交。
+有一份下载或校验失败，任务不会提交，仓库保留上一版。
+目录内目前共 8 个规则文件（含 !CN.list），均由该任务维护。

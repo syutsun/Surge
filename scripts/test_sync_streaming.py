@@ -1,5 +1,5 @@
 import unittest
-from sync_streaming import merge_rules, spotify_span
+from sync_streaming import merge_rules, spotify_span, build_outputs, MIRRORS
 
 class StreamingMerge(unittest.TestCase):
     def setUp(self):
@@ -41,6 +41,39 @@ class StreamingMerge(unittest.TestCase):
         result = merge_rules(self.prefix + self.spotify, personal)
         start, end = spotify_span(result)
         self.assertEqual(result[start:end], personal)
+
+
+class StandaloneMirrors(unittest.TestCase):
+    def setUp(self):
+        self.upstream = "# Streaming Media\n" + "".join("DOMAIN,host%d.test\n" % i for i in range(100)) + "# > Spotify\nDOMAIN,upstream.test\n"
+        self.personal = "# > Spotify\nDOMAIN,personal.test\n"
+        self.mirrors = {name: (header + "\nDOMAIN,mirror.test\n#DOMAIN,disabled.test\n").encode()
+                        for name, (_, header) in MIRRORS.items()}
+
+    def test_all_eight_outputs_preserve_sources_and_personal_spotify(self):
+        outputs = build_outputs(self.upstream, self.personal, self.mirrors)
+        self.assertEqual(len(outputs), 8)
+        self.assertEqual(outputs["Ruleset/Streaming/Spotify.list"], self.personal.encode())
+        self.assertIn(self.personal.encode(), outputs["Ruleset/Streaming/!CN.list"])
+        for name, data in self.mirrors.items():
+            self.assertEqual(outputs["Ruleset/Streaming/" + name], data)
+        self.assertEqual(MIRRORS["HBO.list"][0], "Max.list")
+
+    def test_missing_file_or_wrong_service_fails(self):
+        incomplete = dict(self.mirrors)
+        incomplete.pop("Netflix.list")
+        with self.assertRaises(ValueError):
+            build_outputs(self.upstream, self.personal, incomplete)
+        wrong = dict(self.mirrors)
+        wrong["HBO.list"] = b"# > Wrong\nDOMAIN,wrong.test\n"
+        with self.assertRaises(ValueError):
+            build_outputs(self.upstream, self.personal, wrong)
+
+    def test_download_error_content_fails(self):
+        broken = dict(self.mirrors)
+        broken["YouTube.list"] = b"<html>Unavailable</html>"
+        with self.assertRaises(ValueError):
+            build_outputs(self.upstream, self.personal, broken)
 
 if __name__ == "__main__":
     unittest.main()
