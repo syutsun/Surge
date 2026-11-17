@@ -25,6 +25,8 @@ GitHub Actions 每 24 小时检查，计划时间为北京时间每天 08:23（G
 https://github.com/Script-Hub-Org/Script-Hub/tree/b8e405cba4e751feaacda97f2148bf3590b5c92d
 固定版本并校验 SHA-256；运行时下载，不在此仓库复制其源码。
 只增加 Surge 格式需要的唯一脚本名称和 binary-body-mode 标记，不增加应用去广告规则。
+还原并逐条校验上游原始 URL 正则、处理动作、原脚本地址、替换参数，以及完整分流和 MITM 域名。
+校验不只比较总数：同数量的规则被替换、脚本链接或参数被改动也会拒绝发布。
 被上游注释的规则保持停用。上游脚本内容通过 URL 引用，不执行、不解密、不合并第三方补丁。
 
 自动构建校验不能替代 iPhone/iPad 上的 Surge 实际功能测试。

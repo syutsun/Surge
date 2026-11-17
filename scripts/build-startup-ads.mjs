@@ -20,6 +20,88 @@ function entries(text) {
   }
   return result;
 }
+
+function targetRecords(text) {
+  let section = '';
+  const records = [];
+  for (const line of text.split(/\r?\n/)) {
+    if (line.startsWith('[')) { section = line; continue; }
+    const disabled = line.startsWith('#');
+    const value = line.replace(/^#+/, '');
+    let pattern;
+    if (section === '[Script]' && value.includes(' = type=')) {
+      pattern = value.match(/, pattern=(.*?), script-path=/)?.[1]?.replace(/^"|"$/g, '');
+    } else if (['[URL Rewrite]','[Map Local]'].includes(section) && /^(?:\^|http)/.test(value)) {
+      pattern = value.split(/\s/)[0];
+    } else if (section === '[Body Rewrite]' && value.startsWith('http-')) {
+      pattern = value.split(/\s+/)[1];
+    }
+    if (pattern) records.push({section, value, pattern, disabled});
+  }
+  return records;
+}
+export function verifyCoverage(source, body) {
+  const rules = [...new Set(source.split(/\r?\n/).filter(active).filter(line => /\surl\s/.test(line)))];
+  const records = targetRecords(body);
+  const consumed = new Set();
+  for (const rule of rules) {
+    const match = rule.match(/^(\S+)\s+url\s+(\S+)(?:\s+(.*))?$/);
+    if (!match) throw new Error('Cannot parse upstream rule: '+rule);
+    const [,pattern,action,arg] = match;
+    const matches = records.map((record,index)=>({record,index})).filter(({record:t}) => {
+      if (t.disabled || t.pattern !== pattern) return false;
+      const out=t.value, section=t.section;
+      if (action==='reject') return section==='[URL Rewrite]' && out.endsWith(' - reject');
+      if (action==='reject-200') return section==='[Map Local]' && out.includes('data=" " status-code=200');
+      if (action==='reject-dict') return section==='[Map Local]' && out.includes('data="{}" status-code=200');
+      if (action==='reject-img') return section==='[Map Local]' && out.includes('data-type=tiny-gif status-code=200');
+      if (action.startsWith('script-')) {
+        const type=/^script-(request|analyze)/.test(action)?'http-request':'http-response';
+        return section==='[Script]' && out.includes('type='+type+',') && out.includes('script-path='+arg+',') &&
+          (!action.endsWith('-body') && action!=='script-analyze-echo-response' || out.includes('requires-body=true'));
+      }
+      if (action==='response-body' || action==='request-body') {
+        const separator=' '+action+' ', split=arg.indexOf(separator);
+        if (split<0) return false;
+        const value=arg.slice(0,split)+'->'+arg.slice(split+separator.length);
+        const type=action==='response-body'?'http-response':'http-request';
+        return section==='[Script]' && out.includes('type='+type+',') &&
+          decodeURIComponent(out.split('argument=')[1] || '')===value;
+      }
+      if (action==='jsonjq-response-body' || action==='jsonjq-request-body') {
+        const type=action==='jsonjq-response-body'?'http-response-jq':'http-request-jq';
+        return section==='[Body Rewrite]' && out.startsWith(type+' ') && out.endsWith(arg);
+      }
+      return false;
+    });
+    if (matches.length!==1) throw new Error('Rule identity/action mismatch: '+rule);
+    consumed.add(matches[0].index);
+  }
+  if (records.filter(t=>!t.disabled).length!==consumed.size) throw new Error('Unexpected active output rules');
+  // Keep all rules intentionally disabled by the author disabled.
+  for (const line of source.split(/\r?\n/).filter(line=>/^\s*[#;]/.test(line))) {
+    const pattern=line.replace(/^\s*[#;]\s*/,'').match(/^(\S+)\s+url\s+/)?.[1];
+    if (pattern && !records.some(t=>t.disabled && t.pattern===pattern)) throw new Error('Disabled rule lost: '+pattern);
+  }
+  return consumed.size;
+}
+function restoreOriginalPatterns(sourceRules,body) {
+  const normalized = pattern => pattern.replace(/\\\?([A-Za-z_][A-Za-z0-9_.-]*)(?![A-Za-z0-9_.-])/g, '\\?(?:[^#?&]+&)*$1');
+  const replacements = new Map();
+  for (const rule of sourceRules) {
+    const pattern=rule.match(/^(\S+)\s+url\s+/)?.[1];
+    if (pattern) {
+      const key=normalized(pattern);
+      if (replacements.has(key) && replacements.get(key)!==pattern) throw new Error('Ambiguous normalized pattern');
+      replacements.set(key,pattern);
+    }
+  }
+  for (const [from,to] of [...replacements].sort((a,b)=>b[0].length-a[0].length)) {
+    if (from!==to) body=body.replaceAll(from,to);
+  }
+  return body;
+}
+
 export async function build({ source, parser, getText }) {
   if (hash(parser) !== PARSER_SHA256) throw new Error('Pinned parser checksum mismatch');
   if (/<html|<!doctype/i.test(source) || !source.includes('@ScriptName')) throw new Error('Source is not the original QX config');
@@ -75,6 +157,10 @@ export async function build({ source, parser, getText }) {
     }
     return line;
   }).join('\n');
+  // Preserve the exact upstream regexes; the generic parser broadens query matching.
+  const allSourceRules = source.split(/\r?\n/).map(line=>line.replace(/^\s*[#;]\s*/, '')).filter(line=>/^\S+\s+url\s/.test(line));
+  body = restoreOriginalPatterns(allSourceRules, body);
+  verifyCoverage(source, body);
   const out = entries(body);
   const actionSections = new Set(['[URL Rewrite]','[Map Local]','[Body Rewrite]','[Script]']);
   const converted = out.filter(e => actionSections.has(e.section)).length;
@@ -88,7 +174,8 @@ export async function build({ source, parser, getText }) {
   if (!before.size || before.size !== after.size || [...before].some(h=>!after.has(h))) throw new Error('MITM hostname mismatch');
   const sourceRouting = input.filter(line => /^host(?:-suffix)?,/.test(line));
   const routing = out.filter(e=>e.section==='[Rule]');
-  if (sourceRouting.length !== routing.length) throw new Error('Routing count mismatch');
+  const canonicalRoute = line => line.replace(/\s/g,'').toUpperCase().replace(/^HOST-SUFFIX,/,'DOMAIN-SUFFIX,').replace(/^HOST,/,'DOMAIN,');
+  if (JSON.stringify(sourceRouting.map(canonicalRoute).sort()) !== JSON.stringify(routing.map(e=>canonicalRoute(e.line)).sort())) throw new Error('Routing identity mismatch');
   const upstreamDate = source.match(/@UpdateTime\s+(\S+)/)?.[1] || 'unknown';
   const sourceNotice = source.split('// ==/UserScript==')[0].split('\n').map(line=>'# '+line).join('\n');
   return [
@@ -102,7 +189,7 @@ export async function build({ source, parser, getText }) {
     '# Parser: https://github.com/Script-Hub-Org/Script-Hub/tree/'+PARSER_COMMIT,
     '# URL rules: '+rules.length+'; unique converted: '+converted,
     '# Routing rules: '+routing.length+'; MITM hostnames: '+before.size,
-    '# Only format compatibility: unique script names and binary-body-mode.',
+    '# Compatibility: unique script names and binary-body-mode; exact upstream URL patterns preserved.',
     sourceNotice, '', body.trim(), ''
   ].join('\n').replace(/[ \t]+$/gm, '');
 }

@@ -7,6 +7,7 @@ on:
     branches: [main]
     paths:
       - scripts/build-startup-ads.mjs
+      - scripts/test-startup-ads.mjs
       - .github/workflows/update-startup-ads.yml
 permissions:
   contents: write
@@ -22,6 +23,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Test rule identity validation
+        run: node --test scripts/test-startup-ads.mjs
       - name: Fetch, convert and validate original upstream
         run: node scripts/build-startup-ads.mjs
       - name: Commit validated module if changed
