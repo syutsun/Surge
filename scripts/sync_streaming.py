@@ -1,4 +1,4 @@
-"""Sync RuleGo !CN.list while keeping only Spotify's personal section."""
+"""Sync RuleGo streaming lists; keep personal Spotify and comment YouTube in !CN only."""
 from pathlib import Path
 import hashlib
 import ipaddress
@@ -10,14 +10,31 @@ OUTPUT = Path("Ruleset/Streaming/!CN.list")
 PERSONAL = Path("config/Spotify-personal.list")
 
 
-def spotify_span(text):
-    headers = list(re.finditer(r"^# > Spotify[ \t]*\r?$", text, re.M))
+def section_span(text, name):
+    headers = list(re.finditer(r"^# > " + re.escape(name) + r"[ \t]*\r?$", text, re.M))
     if len(headers) != 1:
-        raise ValueError("Missing or duplicate Spotify header")
+        raise ValueError("Missing or duplicate " + name + " header")
     start = headers[0].start()
     following = re.search(r"^# (?:> |\()", text[headers[0].end():], re.M)
     end = headers[0].end() + following.start() if following else len(text)
     return start, end
+
+
+def spotify_span(text):
+    return section_span(text, "Spotify")
+
+
+def comment_youtube(text):
+    start, end = section_span(text, "YouTube")
+    block = text[start:end]
+    # Preserve the title, existing comments, whitespace and following providers.
+    commented = "".join(
+        "# " + line if line.strip() and not line.lstrip().startswith("#") else line
+        for line in block.splitlines(keepends=True)
+    )
+    if validate_rules(commented, 0) != 0:
+        raise ValueError("YouTube rules are still active")
+    return text[:start] + commented + text[end:]
 
 
 def validate_rules(text, minimum):
@@ -85,7 +102,7 @@ VIDEO_SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge
 
 def build_outputs(upstream, personal, mirrors):
     # Validate every download before writing any output.
-    outputs = {str(OUTPUT): merge_rules(upstream, personal).encode("utf-8")}
+    outputs = {str(OUTPUT): comment_youtube(merge_rules(upstream, personal)).encode("utf-8")}
     pstart, pend = spotify_span(personal)
     if pstart != 0 or pend != len(personal):
         raise ValueError("Personal Spotify scope mismatch")

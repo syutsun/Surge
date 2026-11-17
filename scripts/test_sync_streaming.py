@@ -1,5 +1,5 @@
 import unittest
-from sync_streaming import merge_rules, spotify_span, build_outputs, MIRRORS
+from sync_streaming import merge_rules, spotify_span, build_outputs, MIRRORS, comment_youtube, section_span
 
 class StreamingMerge(unittest.TestCase):
     def setUp(self):
@@ -45,7 +45,7 @@ class StreamingMerge(unittest.TestCase):
 
 class StandaloneMirrors(unittest.TestCase):
     def setUp(self):
-        self.upstream = "# Streaming Media\n" + "".join("DOMAIN,host%d.test\n" % i for i in range(100)) + "# > Spotify\nDOMAIN,upstream.test\n"
+        self.upstream = "# Streaming Media\n" + "".join("DOMAIN,host%d.test\n" % i for i in range(100)) + "# > Spotify\nDOMAIN,upstream.test\n# > YouTube\nDOMAIN-SUFFIX,youtube.com\n"
         self.personal = "# > Spotify\nDOMAIN,personal.test\n"
         self.mirrors = {name: (header + "\nDOMAIN,mirror.test\n#DOMAIN,disabled.test\n").encode()
                         for name, (_, header) in MIRRORS.items()}
@@ -74,6 +74,39 @@ class StandaloneMirrors(unittest.TestCase):
         broken["YouTube.list"] = b"<html>Unavailable</html>"
         with self.assertRaises(ValueError):
             build_outputs(self.upstream, self.personal, broken)
+
+
+class YouTubePolicy(unittest.TestCase):
+    def test_disables_all_current_and_future_rules_inside_only_this_section(self):
+        before = "# Streaming Media\n# > Before\nDOMAIN,before.test\n"
+        youtube = "# > YouTube\nDOMAIN-SUFFIX,youtube.com\n#DOMAIN,already-disabled.test\n\nDOMAIN,new-youtube.test\n"
+        after = "# > Future Provider\nDOMAIN,after.test\n"
+        expected = "# > YouTube\n# DOMAIN-SUFFIX,youtube.com\n#DOMAIN,already-disabled.test\n\n# DOMAIN,new-youtube.test\n"
+        result = comment_youtube(before + youtube + after)
+        self.assertEqual(result, before + expected + after)
+        self.assertEqual(comment_youtube(result), result)
+
+    def test_category_boundary_and_crlf_are_preserved(self):
+        value = "# > YouTube\r\nDOMAIN,youtube.com\r\n# (Other)\r\nDOMAIN,other.test\r\n"
+        expected = "# > YouTube\r\n# DOMAIN,youtube.com\r\n# (Other)\r\nDOMAIN,other.test\r\n"
+        self.assertEqual(comment_youtube(value), expected)
+
+    def test_missing_or_duplicate_youtube_header_fails(self):
+        for value in ("# > Renamed\nDOMAIN,youtube.com\n",
+                      "# > YouTube\nDOMAIN,one.test\n# > YouTube\nDOMAIN,two.test\n"):
+            with self.assertRaises(ValueError):
+                comment_youtube(value)
+
+    def test_personal_spotify_and_standalone_youtube_are_preserved(self):
+        upstream = "# Streaming Media\n" + "DOMAIN,other.test\n"*100 + "# > Spotify\nDOMAIN,old.test\n# > YouTube\nDOMAIN,youtube.com\n"
+        personal = "# > Spotify\nDOMAIN,personal.test\n"
+        mirrors = {name:(header+"\nDOMAIN,mirror.test\n").encode() for name,(_,header) in MIRRORS.items()}
+        outputs = build_outputs(upstream, personal, mirrors)
+        self.assertEqual(outputs["Ruleset/Streaming/YouTube.list"], mirrors["YouTube.list"])
+        self.assertEqual(outputs["Ruleset/Streaming/Spotify.list"], personal.encode())
+        merged = outputs["Ruleset/Streaming/!CN.list"].decode()
+        self.assertIn("# > Spotify\nDOMAIN,personal.test\n", merged)
+        self.assertIn("# > YouTube\n# DOMAIN,youtube.com\n", merged)
 
 if __name__ == "__main__":
     unittest.main()
