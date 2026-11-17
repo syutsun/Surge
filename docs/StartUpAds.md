@@ -32,3 +32,15 @@ https://github.com/Script-Hub-Org/Script-Hub/tree/b8e405cba4e751feaacda97f2148bf
 自动构建校验不能替代 iPhone/iPad 上的 Surge 实际功能测试。
 
 > 更新时间统一说明：所有定时检查由 `Daily updates at 07 China time` 在北京时间每天 07:00（UTC 前一天 23:00）启动，按顺序运行；本文件对应工作流保留手动和配置变更触发，不再单独设定 cron。具体开始时间可能受 GitHub 调度延迟影响。
+
+## 模块头部
+
+按用户设置，生成模块开头只保留以下两行：
+
+```
+#!name=墨鱼去开屏2.0
+#!desc=仅转换墨鱼原规则；需开启MITM并信任证书。
+```
+
+其他头部元数据、构建信息和原始脚本说明不再写入模块。规则正文保留，原始作者为 @ddgksf2013，来源仍为 https://ddgksf2013.top/rewrite/StartUpAds.conf 。
+上游 SHA-256、转换器版本和规则完整性统计移到 Actions 日志，原有逐条校验继续执行。

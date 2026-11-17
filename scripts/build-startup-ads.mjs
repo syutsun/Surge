@@ -176,21 +176,19 @@ export async function build({ source, parser, getText }) {
   const routing = out.filter(e=>e.section==='[Rule]');
   const canonicalRoute = line => line.replace(/\s/g,'').toUpperCase().replace(/^HOST-SUFFIX,/,'DOMAIN-SUFFIX,').replace(/^HOST,/,'DOMAIN,');
   if (JSON.stringify(sourceRouting.map(canonicalRoute).sort()) !== JSON.stringify(routing.map(e=>canonicalRoute(e.line)).sort())) throw new Error('Routing identity mismatch');
-  const upstreamDate = source.match(/@UpdateTime\s+(\S+)/)?.[1] || 'unknown';
-  const sourceNotice = source.split('// ==/UserScript==')[0].split('\n').map(line=>'# '+line).join('\n');
+  console.log(JSON.stringify({
+    source: SOURCE,
+    sourceSha256: hash(source),
+    parserCommit: PARSER_COMMIT,
+    inputUrlRules: rules.length,
+    convertedUniqueRules: converted,
+    routingRules: routing.length,
+    mitmHostnames: before.size
+  }));
   return [
-    '#!name=墨鱼去开屏2.0 · 原规则自动转换',
-    '#!desc=仅转换墨鱼原规则，无附加应用补丁；需开启MITM并信任证书。',
-    '#!author=@ddgksf2013',
-    '#!category=广告屏蔽',
-    '# Source: '+SOURCE,
-    '# Source update: '+upstreamDate,
-    '# Source SHA-256: '+hash(source),
-    '# Parser: https://github.com/Script-Hub-Org/Script-Hub/tree/'+PARSER_COMMIT,
-    '# URL rules: '+rules.length+'; unique converted: '+converted,
-    '# Routing rules: '+routing.length+'; MITM hostnames: '+before.size,
-    '# Compatibility: unique script names and binary-body-mode; exact upstream URL patterns preserved.',
-    sourceNotice, '', body.trim(), ''
+    '#!name=墨鱼去开屏2.0',
+    '#!desc=仅转换墨鱼原规则；需开启MITM并信任证书。',
+    '', body.trim(), ''
   ].join('\n').replace(/[ \t]+$/gm, '');
 }
 async function download(url) {
@@ -216,6 +214,6 @@ export async function main() {
   await mkdir(dirname(output),{recursive:true});
   await writeFile(output+'.tmp',module);
   await rename(output+'.tmp',output);
-  console.log(module.split('\n').slice(0,11).join('\n'));
+  console.log(module.split('\n').slice(0,2).join('\n'));
 }
 if (globalThis.process?.argv?.[1] && import.meta.url === pathToFileURL(globalThis.process.argv[1]).href) await main();
