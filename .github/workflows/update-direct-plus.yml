@@ -1,0 +1,40 @@
+name: Update personal Direct Plus rules
+on:
+  schedule:
+    - cron: '23 2 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/sync_direct_plus.py
+      - scripts/test_sync_direct_plus.py
+      - .github/workflows/update-direct-plus.yml
+permissions:
+  contents: write
+concurrency:
+  group: update-moyu-startup-ads
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test excluded section boundaries
+        run: python -m unittest discover -s scripts -p test_sync_direct_plus.py -v
+      - name: Sync original upstream excluding Google section
+        run: python scripts/sync_direct_plus.py
+      - name: Commit changed rules
+        run: |
+          if git diff --quiet -- 'Ruleset/Direct+.list'; then
+            echo "No rules changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- 'Ruleset/Direct+.list'
+          git commit -m "chore: sync Direct Plus excluding Google section"
+          git push origin HEAD:main
