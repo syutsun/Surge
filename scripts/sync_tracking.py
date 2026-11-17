@@ -1,7 +1,8 @@
-"""Mirror ConnersHua/RuleGo Tracking.list unchanged after validation."""
+"""Sync RuleGo Tracking.list and comment the MI section per user policy."""
 from pathlib import Path
 import hashlib
 import ipaddress
+import re
 import urllib.request
 
 SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Reject/Tracking.list"
@@ -42,6 +43,26 @@ def validate(data):
     return count
 
 
+def comment_mi(data):
+    validate(data)
+    source = data.decode("utf-8")
+    headers = list(re.finditer(r"^# > MI[ \t]*\r?$", source, re.M))
+    if len(headers) != 1:
+        raise ValueError("Missing or duplicate MI section")
+    start = headers[0].start()
+    following = re.search(r"^# (?:> |---|\()", source[headers[0].end():], re.M)
+    end = headers[0].end() + following.start() if following else len(source)
+    block = source[start:end]
+    commented = "".join(
+        "# " + line if line.strip() and not line.lstrip().startswith("#") else line
+        for line in block.splitlines(keepends=True)
+    )
+    if any(line.strip() and not line.lstrip().startswith("#") for line in commented.splitlines()):
+        raise ValueError("MI rules remain active")
+    result = source[:start] + commented + source[end:]
+    return result.encode("utf-8")
+
+
 def main():
     last_error = None
     for attempt in range(3):
@@ -55,11 +76,14 @@ def main():
             last_error = error
     else:
         raise RuntimeError("Upstream download/validation failed") from last_error
+    result = comment_mi(data)
+    active_count = validate(result)
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     temporary = OUTPUT.with_suffix(".list.tmp")
-    temporary.write_bytes(data)
+    temporary.write_bytes(result)
     temporary.replace(OUTPUT)
-    print("Mirrored original upstream:", count, "rules; SHA-256:", hashlib.sha256(data).hexdigest())
+    print("Upstream rules:", count, "; active after commenting MI:", active_count,
+          "; upstream SHA-256:", hashlib.sha256(data).hexdigest())
 
 
 if __name__ == "__main__":
