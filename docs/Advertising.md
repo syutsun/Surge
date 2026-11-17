@@ -10,7 +10,7 @@ https://github.com/ConnersHua/RuleGo/blob/master/Surge/Ruleset/Extra/Reject/Adve
 文件下载成功并通过基本内容、规则格式和最小数量检查后才更新；保留原始字节与注释。
 失败时任务报错，仓库保留上一份规则。每次运行日志记录规则数量和 SHA-256。
 
-每 24 小时检查一次，计划北京时间每天 08:43，错开已有更新任务，实际执行可能排队或延迟。
+每 24 小时检查一次，计划北京时间每天 07:00，由统一任务依次运行，实际执行可能排队或延迟。
 有变化时才提交。Actions → Update Advertising rules → Run workflow 可手动触发。
 长期无仓库活动导致 GitHub 停用定时任务时，需在 Actions 重新启用。
 
@@ -20,3 +20,5 @@ https://github.com/ConnersHua/RuleGo/blob/master/Surge/Ruleset/Extra/Reject/Adve
 
 参考引用行（合并到现有配置时，修改原有规则集地址即可）：
 RULE-SET,https://raw.githubusercontent.com/syutsun/Surge/main/Ruleset/Reject/Advertising.list,REJECT
+
+> 更新时间统一说明：所有定时检查由 `Daily updates at 07 China time` 在北京时间每天 07:00（UTC 前一天 23:00）启动，按顺序运行；本文件对应工作流保留手动和配置变更触发，不再单独设定 cron。具体开始时间可能受 GitHub 调度延迟影响。

@@ -1,7 +1,6 @@
 name: Update original Surge modules
 on:
-  schedule:
-    - cron: '3 3 * * *'
+  workflow_call:
   workflow_dispatch:
   push:
     branches: [main]
@@ -9,7 +8,6 @@ on:
       - config/Module-upstreams.json
       - scripts/sync_modules.py
       - scripts/test_sync_modules.py
-      - .github/workflows/update-modules.yml
 permissions:
   contents: write
 concurrency:
@@ -21,6 +19,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

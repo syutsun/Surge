@@ -1,0 +1,63 @@
+name: Daily updates at 07 China time
+on:
+  schedule:
+    - cron: '0 23 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/*.yml
+permissions:
+  contents: write
+concurrency:
+  group: daily-upstream-updates
+  cancel-in-progress: false
+jobs:
+  startup_ads:
+    name: 去开屏模块
+    uses: ./.github/workflows/update-startup-ads.yml
+  ai:
+    name: AI 规则
+    needs: startup_ads
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-ai.yml
+  advertising:
+    name: 广告规则
+    needs: ai
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-advertising.yml
+  tracking:
+    name: Tracking 规则
+    needs: advertising
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-tracking.yml
+  apple:
+    name: Apple 规则
+    needs: tracking
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-apple.yml
+  streaming:
+    name: 流媒体规则
+    needs: apple
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-streaming.yml
+  selected:
+    name: 六份通用规则
+    needs: streaming
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-selected-rules.yml
+  direct_plus:
+    name: Direct+ 规则
+    needs: selected
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-direct-plus.yml
+  direct:
+    name: Direct 规则
+    needs: direct_plus
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-direct.yml
+  modules:
+    name: 其他模块
+    needs: direct
+    if: ${{ !cancelled() }}
+    uses: ./.github/workflows/update-modules.yml

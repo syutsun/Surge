@@ -1,13 +1,11 @@
 name: Update Apple rules
 on:
-  schedule:
-    - cron: '23 1 * * *'
+  workflow_call:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - scripts/sync_apple.py
-      - .github/workflows/update-apple.yml
 permissions:
   contents: write
 concurrency:
@@ -19,6 +17,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

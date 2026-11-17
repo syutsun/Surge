@@ -1,7 +1,6 @@
 name: Update personal AI rules
 on:
-  schedule:
-    - cron: '23 0 * * *'
+  workflow_call:
   workflow_dispatch:
   push:
     branches: [main]
@@ -9,7 +8,6 @@ on:
       - config/AI-personal.list
       - scripts/sync-ai.mjs
       - scripts/test-sync-ai.mjs
-      - .github/workflows/update-ai.yml
 permissions:
   contents: write
 # Serialize repository writers with the existing daily Moyu updater.
@@ -22,6 +20,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

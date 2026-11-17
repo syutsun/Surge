@@ -1,14 +1,12 @@
 name: Update Tracking rules
 on:
-  schedule:
-    - cron: '3 1 * * *'
+  workflow_call:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - scripts/sync_tracking.py
       - scripts/test_sync_tracking.py
-      - .github/workflows/update-tracking.yml
 permissions:
   contents: write
 concurrency:
@@ -20,6 +18,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

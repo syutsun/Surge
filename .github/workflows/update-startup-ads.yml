@@ -1,14 +1,12 @@
 name: Update Moyu StartUpAds
 on:
-  schedule:
-    - cron: '23 0 * * *'
+  workflow_call:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - scripts/build-startup-ads.mjs
       - scripts/test-startup-ads.mjs
-      - .github/workflows/update-startup-ads.yml
 permissions:
   contents: write
 concurrency:
@@ -20,6 +18,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

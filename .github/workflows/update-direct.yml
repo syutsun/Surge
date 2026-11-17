@@ -1,14 +1,12 @@
 name: Update personal Direct rules
 on:
-  schedule:
-    - cron: '43 2 * * *'
+  workflow_call:
   workflow_dispatch:
   push:
     branches: [main]
     paths:
       - scripts/sync_direct.py
       - scripts/test_sync_direct.py
-      - .github/workflows/update-direct.yml
 permissions:
   contents: write
 concurrency:
@@ -20,6 +18,8 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: main
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'

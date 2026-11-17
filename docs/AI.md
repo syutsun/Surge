@@ -10,7 +10,7 @@ https://github.com/ConnersHua/RuleGo/blob/master/Surge/Ruleset/Extra/AI.list
 
 ## 自动更新范围
 
-每天检查上游一次，计划北京时间 08:23，可能因 GitHub 调度或仓库写入锁排队而延迟。
+每天检查上游一次，计划北京时间 07:00，可能因 GitHub 调度或仓库写入锁排队而延迟。
 
 - OpenAI、OpenRouter 两个一级分段固定使用 config/AI-personal.list 中的个人内容，含注释停用规则。
 - 其他分段原样同步上游，包括 Meta 等现有服务及将来新增的一级分段。
@@ -26,3 +26,5 @@ https://github.com/ConnersHua/RuleGo/blob/master/Surge/Ruleset/Extra/AI.list
 仓库同步和 Surge 下载规则集是不同步骤；Surge 端依其规则集刷新设置取新内容。
 
 公开仓库长期无活动时，GitHub 可能停用定时任务，需在 Actions 中重新启用。
+
+> 更新时间统一说明：所有定时检查由 `Daily updates at 07 China time` 在北京时间每天 07:00（UTC 前一天 23:00）启动，按顺序运行；本文件对应工作流保留手动和配置变更触发，不再单独设定 cron。具体开始时间可能受 GitHub 调度延迟影响。
