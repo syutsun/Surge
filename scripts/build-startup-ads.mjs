@@ -104,7 +104,7 @@ export async function build({ source, parser, getText }) {
     '# Routing rules: '+routing.length+'; MITM hostnames: '+before.size,
     '# Only format compatibility: unique script names and binary-body-mode.',
     sourceNotice, '', body.trim(), ''
-  ].join('\n');
+  ].join('\n').replace(/[ \t]+$/gm, '');
 }
 async function download(url) {
   let last;
