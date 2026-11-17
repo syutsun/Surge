@@ -1,0 +1,42 @@
+name: Update Moyu Wannianli
+on:
+  schedule:
+    - cron: '23 0 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/build-wannianli.mjs
+      - scripts/test-wannianli.mjs
+      - .github/workflows/update-wannianli.yml
+permissions:
+  contents: write
+# Share the existing sync lock, so scheduled module updates cannot race their pushes.
+concurrency:
+  group: update-moyu-startup-ads
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Test conversion guards
+        run: node --test scripts/test-wannianli.mjs
+      - name: Fetch, convert and validate original upstream
+        run: node scripts/build-wannianli.mjs
+      - name: Commit validated module and original script if changed
+        run: |
+          git diff --check -- Module/Wannianli.sgmodule
+          if git diff --quiet -- Module/Wannianli.sgmodule Scripts/wannianli.vip.js; then
+            echo "No upstream changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- Module/Wannianli.sgmodule Scripts/wannianli.vip.js
+          git commit -m "chore: sync original Moyu Wannianli module and script"
+          git push origin HEAD:main

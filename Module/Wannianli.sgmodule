@@ -1,0 +1,19 @@
+#!name=万年历 Pro · 墨鱼原脚本
+#!desc=从墨鱼原脚本内嵌配置转换；需开启MITM并信任证书。
+#!author=@ddgksf2013
+#!category=应用增强
+# Source: https://ddgksf2013.top/scripts/wannianli.vip.js
+# Source SHA-256: 204e2333f291ddb6f0a5a863d3460786b739f3d95cd080c0f59cffbd9ab9facf
+# Rewrites: 2; routing rules: 2; MITM hostnames: 1
+# Original script is mirrored byte-for-byte; no supplementary rules.
+
+[Rule]
+DOMAIN,ad.51wnl-cq.com,REJECT
+DOMAIN,adn.51wnl-cq.com,REJECT
+
+[Script]
+Wannianli_1 = type=http-response, pattern=^https?:\/\/r\.51wnl-cq\.com\/api\/Member\/IsMember, script-path=https://raw.githubusercontent.com/syutsun/Surge/main/Scripts/wannianli.vip.js, requires-body=true, max-size=-1, timeout=60, script-update-interval=86400
+Wannianli_2 = type=http-response, pattern=https://r.51wnl-cq\.com\/Api\/User\/GetExtInfo, script-path=https://raw.githubusercontent.com/syutsun/Surge/main/Scripts/wannianli.vip.js, requires-body=true, max-size=-1, timeout=60, script-update-interval=86400
+
+[MITM]
+hostname = %APPEND% r.51wnl-cq.com
