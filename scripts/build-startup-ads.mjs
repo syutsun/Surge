@@ -187,7 +187,7 @@ export async function build({ source, parser, getText }) {
   }));
   return [
     '#!name=StartUpAds',
-    '#!desc=StartUpAds',
+    '#!desc=墨鱼去开屏2.0',
     '', body.trim(), ''
   ].join('\n').replace(/[ \t]+$/gm, '');
 }

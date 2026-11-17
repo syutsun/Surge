@@ -39,7 +39,7 @@ https://github.com/Script-Hub-Org/Script-Hub/tree/b8e405cba4e751feaacda97f2148bf
 
 ```
 #!name=StartUpAds
-#!desc=StartUpAds
+#!desc=墨鱼去开屏2.0
 ```
 
 其他头部元数据、构建信息和原始脚本说明不再写入模块。规则正文保留，原始作者为 @ddgksf2013，来源仍为 https://ddgksf2013.top/rewrite/StartUpAds.conf 。
