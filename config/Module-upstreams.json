@@ -63,5 +63,19 @@
       "Script",
       "MITM"
     ]
+  },
+  {
+    "name": "Bilibili.sgmodule",
+    "url": "https://raw.githubusercontent.com/gys619/surge-tools/main/modules/Bilibili_remove_ads.sgmodule",
+    "display_name": "Bilibili",
+    "minimum_bytes": 1000,
+    "sections": [
+      "Rule",
+      "Header Rewrite",
+      "Body Rewrite",
+      "Map Local",
+      "Script",
+      "MITM"
+    ]
   }
 ]
