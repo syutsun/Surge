@@ -186,8 +186,8 @@ export async function build({ source, parser, getText }) {
     mitmHostnames: before.size
   }));
   return [
-    '#!name=墨鱼去开屏2.0',
-    '#!desc=需开启MITM并信任证书。',
+    '#!name=StartUpAds',
+    '#!desc=StartUpAds',
     '', body.trim(), ''
   ].join('\n').replace(/[ \t]+$/gm, '');
 }

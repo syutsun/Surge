@@ -38,8 +38,8 @@ https://github.com/Script-Hub-Org/Script-Hub/tree/b8e405cba4e751feaacda97f2148bf
 按用户设置，生成模块开头只保留以下两行：
 
 ```
-#!name=墨鱼去开屏2.0
-#!desc=需开启MITM并信任证书。
+#!name=StartUpAds
+#!desc=StartUpAds
 ```
 
 其他头部元数据、构建信息和原始脚本说明不再写入模块。规则正文保留，原始作者为 @ddgksf2013，来源仍为 https://ddgksf2013.top/rewrite/StartUpAds.conf 。
