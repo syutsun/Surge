@@ -187,7 +187,7 @@ export async function build({ source, parser, getText }) {
   }));
   return [
     '#!name=墨鱼去开屏2.0',
-    '#!desc=仅转换墨鱼原规则；需开启MITM并信任证书。',
+    '#!desc=需开启MITM并信任证书。',
     '', body.trim(), ''
   ].join('\n').replace(/[ \t]+$/gm, '');
 }
