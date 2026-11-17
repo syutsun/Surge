@@ -1,0 +1,42 @@
+name: Update personal Streaming rules
+on:
+  schedule:
+    - cron: '43 1 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - config/Spotify-personal.list
+      - scripts/sync_streaming.py
+      - scripts/test_sync_streaming.py
+      - .github/workflows/update-streaming.yml
+permissions:
+  contents: write
+concurrency:
+  group: update-moyu-startup-ads
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test personal section preservation
+        run: python -m unittest discover -s scripts -p test_sync_streaming.py -v
+      - name: Sync upstream except personal Spotify section
+        run: python scripts/sync_streaming.py
+      - name: Commit changed rules
+        run: |
+          git diff --check -- 'Ruleset/Streaming/!CN.list'
+          if git diff --quiet -- 'Ruleset/Streaming/!CN.list'; then
+            echo "No rules changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- 'Ruleset/Streaming/!CN.list'
+          git commit -m "chore: sync streaming rules while preserving personal Spotify section"
+          git push origin HEAD:main

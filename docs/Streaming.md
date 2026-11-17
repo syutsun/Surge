@@ -1,0 +1,23 @@
+# 海外流媒体规则：保留个人 Spotify
+
+订阅地址：
+https://raw.githubusercontent.com/syutsun/Surge/main/Ruleset/Streaming/!CN.list
+
+上游来源 ConnersHua/RuleGo：
+https://github.com/ConnersHua/RuleGo/blob/master/Surge/Ruleset/Extra/Streaming/!CN.list
+
+仅 Spotify 分段固定采用 config/Spotify-personal.list 的个人内容，包括注释。
+其他全部内容原样同步上游，不合并额外规则，不去重，保留原有停用规则、IP-CIDR、GEOIP 和未来新增服务。
+替换范围从唯一的 # > Spotify 标题开始，到下一服务或分类标题之前；不是按行号截取。
+缺失或重复标题、个人文件夹带其他服务、下载错误或校验失败时不提交，保留上一份规则。
+
+每 24 小时检查一次，计划北京时间每天 09:43，GitHub 实际运行可能延迟。
+有变化时才提交，和其他同步任务共用仓库写入锁。
+Actions → Update personal Streaming rules → Run workflow 可手动运行。
+公开仓库长期无活动导致 GitHub 停用定时任务时，需在 Actions 重新启用。
+
+以后修改 Spotify，请编辑 config/Spotify-personal.list。提交后会自动重建。
+不要直接修改生成文件 Ruleset/Streaming/!CN.list，下一次同步会覆盖。
+
+在 Surge 分流规则中替换原上游 URL，沿用原来的海外流媒体策略组。
+这是规则集，不是模块；Surge 按自己的规则集刷新设置获取仓库新版。
