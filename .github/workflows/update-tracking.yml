@@ -1,0 +1,40 @@
+name: Update Tracking rules
+on:
+  schedule:
+    - cron: '3 1 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/sync_tracking.py
+      - scripts/test_sync_tracking.py
+      - .github/workflows/update-tracking.yml
+permissions:
+  contents: write
+concurrency:
+  group: update-moyu-startup-ads
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test mirror validation
+        run: python -m unittest discover -s scripts -p test_sync_tracking.py -v
+      - name: Download and validate original upstream
+        run: python scripts/sync_tracking.py
+      - name: Commit upstream changes
+        run: |
+          if git diff --quiet -- Ruleset/Reject/Tracking.list; then
+            echo "No upstream changes."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -- Ruleset/Reject/Tracking.list
+          git commit -m "chore: sync original RuleGo tracking rules"
+          git push origin HEAD:main
