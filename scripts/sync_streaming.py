@@ -1,4 +1,4 @@
-"""Sync RuleGo streaming lists; keep personal Spotify and comment YouTube in !CN only."""
+"""Sync RuleGo streaming lists; sync upstream Spotify with personal additions and comment YouTube in !CN only."""
 from pathlib import Path
 import hashlib
 import ipaddress
@@ -8,6 +8,7 @@ import urllib.request
 SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/!CN.list"
 OUTPUT = Path("Ruleset/Streaming/!CN.list")
 PERSONAL = Path("config/Spotify-personal.list")
+SPOTIFY_SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Music/Spotify.list"
 
 
 def section_span(text, name):
@@ -71,20 +72,38 @@ def validate_rules(text, minimum):
     return count
 
 
-def merge_rules(upstream, personal):
-    validate_rules(upstream, 100)
+def add_spotify_rules(upstream, personal):
+    """Keep upstream Spotify rules current and append only missing personal rules."""
+    validate_rules(upstream, 1)
     validate_rules(personal, 1)
     start, end = spotify_span(upstream)
     pstart, pend = spotify_span(personal)
-    if pstart != 0 or pend != len(personal):
-        raise ValueError("Personal file must contain only the Spotify section")
-    block = personal.rstrip("\r\n") + "\n"
+    if start != 0 or end != len(upstream) or pstart != 0 or pend != len(personal):
+        raise ValueError("Spotify inputs must contain only the Spotify section")
+    seen = {line.split(" //", 1)[0].strip() for line in upstream.splitlines()
+            if line.strip() and not line.lstrip().startswith("#")}
+    additions = []
+    for line in personal.splitlines()[1:]:
+        key = line.split(" //", 1)[0].strip()
+        if not key or key.startswith("#"):
+            continue
+        if key not in seen:
+            additions.append(line)
+            seen.add(key)
+    if not additions:
+        return upstream
+    newline = "\r\n" if "\r\n" in upstream else "\n"
+    return upstream.rstrip("\r\n") + newline + newline.join(additions) + newline
+
+
+def merge_rules(upstream, personal):
+    validate_rules(upstream, 100)
+    start, end = spotify_span(upstream)
+    block = add_spotify_rules(upstream[start:end], personal)
     result = upstream[:start] + block + upstream[end:]
     rstart, rend = spotify_span(result)
     if result[:rstart] != upstream[:start] or result[rend:] != upstream[end:]:
         raise ValueError("Non-Spotify content changed")
-    if result[rstart:rend] != block:
-        raise ValueError("Personal Spotify section changed")
     return result
 
 
@@ -100,14 +119,10 @@ MIRRORS = {
 VIDEO_SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Video/"
 
 
-def build_outputs(upstream, personal, mirrors):
+def build_outputs(upstream, personal, mirrors, spotify_upstream):
     # Validate every download before writing any output.
     outputs = {str(OUTPUT): comment_youtube(merge_rules(upstream, personal)).encode("utf-8")}
-    pstart, pend = spotify_span(personal)
-    if pstart != 0 or pend != len(personal):
-        raise ValueError("Personal Spotify scope mismatch")
-    validate_rules(personal, 1)
-    outputs["Ruleset/Streaming/Spotify.list"] = personal.encode("utf-8")
+    outputs["Ruleset/Streaming/Spotify.list"] = add_spotify_rules(spotify_upstream, personal).encode("utf-8")
     if set(mirrors) != set(MIRRORS):
         raise ValueError("Missing or unexpected standalone mirror")
     for local, (_, header) in MIRRORS.items():
@@ -136,7 +151,8 @@ def main():
     personal = PERSONAL.read_bytes().decode("utf-8")
     data = download(SOURCE)
     mirrors = {local: download(VIDEO_SOURCE + name) for local, (name, _) in MIRRORS.items()}
-    outputs = build_outputs(data.decode("utf-8"), personal, mirrors)
+    spotify_upstream = download(SPOTIFY_SOURCE).decode("utf-8")
+    outputs = build_outputs(data.decode("utf-8"), personal, mirrors, spotify_upstream)
     for name, content in outputs.items():
         path = Path(name)
         path.parent.mkdir(parents=True, exist_ok=True)
