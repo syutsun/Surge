@@ -10,7 +10,7 @@ Surge「模块 → 安装新模块」粘贴该 URL 即可；开启 MITM 并安�
 
 ## 更新
 
-GitHub Actions 每 24 小时检查，计划时间为北京时间每天 07:00（GitHub 可能延迟）。
+GitHub Actions 每 24 小时检查，计划时间为北京时间每天 08:00（GitHub 可能延迟）。
 也可在 Actions → Update Moyu StartUpAds → Run workflow 手动运行。
 只有转换结果变化时才提交；每次保留上游 SHA-256，结果不含每次变化的构建时间。
 仓库生成最新模块后，Surge 仍需刷新该远程模块才能获取最新内容；仓库的定时任务不会向设备推送。
@@ -31,7 +31,7 @@ https://github.com/Script-Hub-Org/Script-Hub/tree/b8e405cba4e751feaacda97f2148bf
 
 自动构建校验不能替代 iPhone/iPad 上的 Surge 实际功能测试。
 
-> 更新时间统一说明：所有定时检查由 `Daily updates at 07 China time` 在北京时间每天 07:00（UTC 前一天 23:00）启动，按顺序运行；本文件对应工作流保留手动和配置变更触发，不再单独设定 cron。具体开始时间可能受 GitHub 调度延迟影响。
+> 更新时间统一说明：所有定时检查由 `Daily updates at 08 China time` 在北京时间每天 08:00（UTC 当天 00:00）启动，按顺序运行；本文件对应工作流保留手动和配置变更触发，不再单独设定 cron。具体开始时间可能受 GitHub 调度延迟影响。
 
 ## 模块头部
 

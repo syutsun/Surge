@@ -1,7 +1,7 @@
-name: Daily updates at 07 China time
+name: Daily updates at 08 China time
 on:
   schedule:
-    - cron: '0 23 * * *'
+    - cron: '0 0 * * *'
   workflow_dispatch:
   push:
     branches: [main]

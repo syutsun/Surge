@@ -1,6 +1,6 @@
 # Surge 模块每日上游同步
 
-每天北京时间 07:00 检查以下原作者或用户指定的来源，有变化才提交。文件名和个人仓库订阅 URL 不变。
+每天北京时间 08:00 检查以下原作者或用户指定的来源，有变化才提交。文件名和个人仓库订阅 URL 不变。
 Spotify、YouTube、Zhihu、Bilibili 保留自定义显示名，其他内容跟随上游。Advertising、Script Hub、Sub-Store 原样同步。
 原始脚本仍由各模块所引用的远程地址提供，本任务不重新编写或合并脚本。
 
@@ -31,4 +31,4 @@ StartUpAds.sgmodule 继续使用 scripts/build-startup-ads.mjs 的每日统一�
 
 仓库自动更新和 Surge 设备刷新是不同步骤。更新设备中的模块和远程脚本时，请在 Surge 中刷新对应资源。
 
-> 更新时间统一说明：所有定时检查由 `Daily updates at 07 China time` 在北京时间每天 07:00（UTC 前一天 23:00）启动，按顺序运行；这两类工作流均保留手动和配置变更触发，不再单独设定 cron。具体开始时间可能受 GitHub 调度延迟影响。
+> 更新时间统一说明：所有定时检查由 `Daily updates at 08 China time` 在北京时间每天 08:00（UTC 当天 00:00）启动，按顺序运行；这两类工作流均保留手动和配置变更触发，不再单独设定 cron。具体开始时间可能受 GitHub 调度延迟影响。
