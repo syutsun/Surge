@@ -1,0 +1,122 @@
+[
+  {
+    "path": "Ruleset/Reject/Advertising.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Reject/Advertising.list",
+    "validator": "advertising"
+  },
+  {
+    "path": "Ruleset/Apple.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Apple/Apple.list",
+    "validator": "apple"
+  },
+  {
+    "path": "Ruleset/PayPal.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/PayPal.list",
+    "validator": "selected",
+    "header": "# > PayPal",
+    "minimum": 1
+  },
+  {
+    "path": "Ruleset/Proxy+.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Proxy+.list",
+    "validator": "selected",
+    "header": "# Proxy+",
+    "minimum": 1
+  },
+  {
+    "path": "Ruleset/Proxy.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Proxy.list",
+    "validator": "selected",
+    "header": "# Proxy",
+    "minimum": 100
+  },
+  {
+    "path": "Ruleset/Telegram.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Telegram.list",
+    "validator": "selected",
+    "header": "# Telegram",
+    "minimum": 1
+  },
+  {
+    "path": "Ruleset/WeChat.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/WeChat.list",
+    "validator": "selected",
+    "header": "# > WeChat",
+    "minimum": 1
+  },
+  {
+    "path": "Ruleset/X.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/X.list",
+    "validator": "selected",
+    "header": "# > Twitter",
+    "minimum": 1
+  },
+  {
+    "path": "Ruleset/Streaming/Disney+.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Video/Disney+.list",
+    "validator": "streaming",
+    "header": "# > Disney+"
+  },
+  {
+    "path": "Ruleset/Streaming/HBO-Asia.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Video/HBO-Asia.list",
+    "validator": "streaming",
+    "header": "# > HBO Asia"
+  },
+  {
+    "path": "Ruleset/Streaming/HBO.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Video/Max.list",
+    "validator": "streaming",
+    "header": "# > Max"
+  },
+  {
+    "path": "Ruleset/Streaming/Netflix.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Video/Netflix.list",
+    "validator": "streaming",
+    "header": "# > Netflix"
+  },
+  {
+    "path": "Ruleset/Streaming/TikTok.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Video/TikTok.list",
+    "validator": "streaming",
+    "header": "# > TikTok"
+  },
+  {
+    "path": "Ruleset/Streaming/YouTube.list",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Video/YouTube.list",
+    "validator": "streaming",
+    "header": "# > YouTube"
+  },
+  {
+    "path": "Module/Advertising.sgmodule",
+    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Module/Block/Advertising.sgmodule",
+    "validator": "module",
+    "minimum_bytes": 1000,
+    "sections": [
+      "Rule",
+      "URL Rewrite",
+      "MITM"
+    ]
+  },
+  {
+    "path": "Module/Script Hub.sgmodule",
+    "url": "https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.surge.sgmodule",
+    "validator": "module",
+    "minimum_bytes": 627,
+    "sections": [
+      "General",
+      "Script",
+      "MITM"
+    ]
+  },
+  {
+    "path": "Module/Sub-Store.sgmodule",
+    "url": "https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/config/Surge.sgmodule",
+    "validator": "module",
+    "minimum_bytes": 1000,
+    "sections": [
+      "MITM",
+      "Script"
+    ]
+  }
+]

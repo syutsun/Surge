@@ -31,7 +31,7 @@ Spotify 或 YouTube 标题缺失或重复时拒绝发布，防止个人设置失
 | TikTok.list | Surge/Ruleset/Extra/Streaming/Video/TikTok.list |
 | YouTube.list | Surge/Ruleset/Extra/Streaming/Video/YouTube.list |
 
-这六份规则保持上游原文与注释，不添加补丁。所有下载及校验通过后才写入和提交。
+这六份规则由 Update upstream rules and modules 统一原样同步，每个文件独立校验。
 现有订阅地址、文件名不变。Surge 沿用各文件的原策略组，按自身规则集刷新设置拉取新版。
 
 Actions → Update personal Streaming rules → Run workflow 可手动触发。公开仓库长期无活动导致 GitHub 停用定时任务时，需在 Actions 重新启用。

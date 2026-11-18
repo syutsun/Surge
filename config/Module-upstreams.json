@@ -1,43 +1,11 @@
 [
   {
-    "name": "Advertising.sgmodule",
-    "url": "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Module/Block/Advertising.sgmodule",
-    "display_name": "Block Advertising",
-    "minimum_bytes": 1000,
-    "sections": [
-      "Rule",
-      "URL Rewrite",
-      "MITM"
-    ]
-  },
-  {
-    "name": "Script Hub.sgmodule",
-    "url": "https://raw.githubusercontent.com/Script-Hub-Org/Script-Hub/main/modules/script-hub.surge.sgmodule",
-    "display_name": "Script Hub: 重写 & 规则集转换",
-    "minimum_bytes": 627,
-    "sections": [
-      "General",
-      "Script",
-      "MITM"
-    ]
-  },
-  {
     "name": "Spotify.sgmodule",
     "url": "https://raw.githubusercontent.com/app2smile/rules/master/module/spotify.module",
     "display_name": "Spotify",
     "minimum_bytes": 536,
     "sections": [
       "Header Rewrite",
-      "MITM",
-      "Script"
-    ]
-  },
-  {
-    "name": "Sub-Store.sgmodule",
-    "url": "https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/config/Surge.sgmodule",
-    "display_name": "Sub-Store",
-    "minimum_bytes": 1000,
-    "sections": [
       "MITM",
       "Script"
     ]

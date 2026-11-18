@@ -1,0 +1,44 @@
+name: Update upstream rules and modules
+on:
+  workflow_call:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - config/Upstream-mirrors.json
+      - scripts/sync_upstream_mirrors.py
+      - scripts/sync_advertising.py
+      - scripts/sync_apple.py
+      - scripts/sync_selected_rules.py
+      - scripts/test_sync_advertising.py
+      - scripts/test_sync_selected_rules.py
+permissions:
+  contents: write
+concurrency:
+  group: update-moyu-startup-ads
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test rule and module validators
+        run: python -m unittest discover -s scripts -p 'test_sync_*.py' -v
+      - name: Sync mirrors and commit validated changes
+        run: |
+          sync_status=0
+          python scripts/sync_upstream_mirrors.py || sync_status=$?
+          git add -u -- Ruleset Module
+          if ! git diff --cached --quiet; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git commit -m "chore: sync upstream Surge rules and modules"
+            git push origin HEAD:main
+          fi
+          exit "$sync_status"

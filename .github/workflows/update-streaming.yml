@@ -26,17 +26,17 @@ jobs:
           python-version: '3.12'
       - name: Test personal section preservation
         run: python -m unittest discover -s scripts -p test_sync_streaming.py -v
-      - name: Sync all streaming rules and preserve personal Spotify
+      - name: Sync personal streaming rules
         run: python scripts/sync_streaming.py
       - name: Commit changed rules
         run: |
-          git diff --check -- Ruleset/Streaming/
-          if git diff --quiet -- Ruleset/Streaming/; then
+          git diff --check -- 'Ruleset/Streaming/!CN.list' Ruleset/Streaming/Spotify.list
+          if git diff --quiet -- 'Ruleset/Streaming/!CN.list' Ruleset/Streaming/Spotify.list; then
             echo "No rules changed."
             exit 0
           fi
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -- Ruleset/Streaming/
-          git commit -m "chore: sync all streaming rules and preserve personal Spotify"
+          git add -- 'Ruleset/Streaming/!CN.list' Ruleset/Streaming/Spotify.list
+          git commit -m "chore: sync personal streaming rules"
           git push origin HEAD:main

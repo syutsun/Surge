@@ -1,4 +1,4 @@
-"""Sync native Surge modules from their verified original upstreams."""
+"""Sync modules with personal display names and validate native upstream modules."""
 from pathlib import Path
 import hashlib
 import json
@@ -20,6 +20,8 @@ def convert(data, spec):
         raise ValueError("Required sections missing for " + spec["name"])
     if not any(line.strip() and not line.lstrip().startswith(("#", "[")) for line in text.splitlines()):
         raise ValueError("Module has no settings")
+    if "display_name" not in spec:
+        return data
     # Keep the user's display name; preserve all remaining upstream text.
     name = names[0]
     result = text[:name.start()] + "#!name=" + spec["display_name"] + text[name.end():]

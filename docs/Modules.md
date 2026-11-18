@@ -1,7 +1,7 @@
 # Surge 模块每日上游同步
 
 每天北京时间 07:00 检查以下原作者或用户指定的来源，有变化才提交。文件名和个人仓库订阅 URL 不变。
-保留用户现有 #!name 显示名称，其他配置、参数默认值、作者署名、脚本地址及说明跟随上游。
+Spotify、YouTube、Zhihu、Bilibili 保留自定义显示名，其他内容跟随上游。Advertising、Script Hub、Sub-Store 原样同步。
 原始脚本仍由各模块所引用的远程地址提供，本任务不重新编写或合并脚本。
 
 | 本仓库文件 | 原作者来源 |
@@ -14,10 +14,9 @@
 | Bilibili.sgmodule | https://raw.githubusercontent.com/gys619/surge-tools/main/modules/Bilibili_remove_ads.sgmodule （用户指定转换版，保留原作者 kokoryh 署名） |
 | Zhihu.sgmodule | https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/script/zheye/zheye.sgmodule |
 
-来源映射在 config/Module-upstreams.json。
-下载后检查模块名称、必要配置节和文件大小。所有文件校验通过后才写入，CI 全部成功才提交。
-任何来源下载或校验失败，不提交，保留上一版；不会用 HTML、错误页或其他作者的模块替换。
-运行日志记录上游和输出 SHA-256。GitHub 调度可能延迟。Actions → Update original Surge modules 可手动触发。
+自定义显示名的来源维护在 config/Module-upstreams.json，可手动运行 Update Surge modules with personal names。
+原样同步的来源维护在 config/Upstream-mirrors.json，可手动运行 Update upstream rules and modules。
+两个流程均检查必要配置节和文件大小。原样同步对每个文件独立校验，失败的文件保留上一版。
 公开仓库长期无活动导致 GitHub 停用定时任务时，需在 Actions 中重新启用。
 
 ## 另有任务的模块
@@ -32,4 +31,4 @@ StartUpAds.sgmodule 继续使用 scripts/build-startup-ads.mjs 的每日统一�
 
 仓库自动更新和 Surge 设备刷新是不同步骤。更新设备中的模块和远程脚本时，请在 Surge 中刷新对应资源。
 
-> 更新时间统一说明：所有定时检查由 `Daily updates at 07 China time` 在北京时间每天 07:00（UTC 前一天 23:00）启动，按顺序运行；本文件对应工作流保留手动和配置变更触发，不再单独设定 cron。具体开始时间可能受 GitHub 调度延迟影响。
+> 更新时间统一说明：所有定时检查由 `Daily updates at 07 China time` 在北京时间每天 07:00（UTC 前一天 23:00）启动，按顺序运行；这两类工作流均保留手动和配置变更触发，不再单独设定 cron。具体开始时间可能受 GitHub 调度延迟影响。

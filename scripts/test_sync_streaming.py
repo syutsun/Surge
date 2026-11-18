@@ -1,7 +1,7 @@
 import unittest
 from sync_streaming import (
     add_spotify_rules, merge_rules, comment_youtube, section_span,
-    build_outputs, MIRRORS,
+    build_outputs,
 )
 
 class SpotifyAdditions(unittest.TestCase):
@@ -41,10 +41,9 @@ class SpotifyAdditions(unittest.TestCase):
                 add_spotify_rules(source,self.personal)
 
     def test_all_outputs_use_correct_sources_and_keep_youtube_commented(self):
-        mirrors = {name:(header+"\nDOMAIN,mirror.test\n").encode() for name,(_,header) in MIRRORS.items()}
         standalone = "# > Spotify\nDOMAIN,standalone-upstream.test\n"
-        outputs = build_outputs(self.combined,self.personal,mirrors,standalone)
-        self.assertEqual(len(outputs),8)
+        outputs = build_outputs(self.combined,self.personal,standalone)
+        self.assertEqual(len(outputs),2)
         self.assertEqual(outputs["Ruleset/Streaming/Spotify.list"],
                          add_spotify_rules(standalone,self.personal).encode())
         combined = outputs["Ruleset/Streaming/!CN.list"].decode()
@@ -52,12 +51,6 @@ class SpotifyAdditions(unittest.TestCase):
         self.assertNotIn("standalone-upstream.test",combined)
         start,end=section_span(combined,"YouTube")
         self.assertFalse(any(line.strip() and not line.startswith("#") for line in combined[start:end].splitlines()))
-        for name,data in mirrors.items():
-            self.assertEqual(outputs["Ruleset/Streaming/"+name],data)
-
-    def test_incomplete_mirrors_fail(self):
-        with self.assertRaises(ValueError):
-            build_outputs(self.combined,self.personal,{},self.spotify)
 
 class YouTubePolicy(unittest.TestCase):
     def test_current_and_future_youtube_rules_are_commented_only_in_section(self):

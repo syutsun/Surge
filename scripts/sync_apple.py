@@ -1,11 +1,5 @@
 """Mirror ConnersHua/RuleGo Apple.list unchanged after validation."""
-from pathlib import Path
-import hashlib
 import ipaddress
-import urllib.request
-
-SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Apple/Apple.list"
-OUTPUT = Path("Ruleset/Apple.list")
 
 
 def validate(data):
@@ -40,27 +34,3 @@ def validate(data):
     if count < 10:
         raise ValueError("Unexpectedly small upstream file")
     return count
-
-
-def main():
-    last_error = None
-    for attempt in range(3):
-        try:
-            request = urllib.request.Request(SOURCE, headers={"User-Agent": "Surge"})
-            with urllib.request.urlopen(request, timeout=30) as response:
-                data = response.read()
-            count = validate(data)
-            break
-        except Exception as error:
-            last_error = error
-    else:
-        raise RuntimeError("Upstream download/validation failed") from last_error
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    temporary = OUTPUT.with_suffix(".list.tmp")
-    temporary.write_bytes(data)
-    temporary.replace(OUTPUT)
-    print("Mirrored original upstream:", count, "rules; SHA-256:", hashlib.sha256(data).hexdigest())
-
-
-if __name__ == "__main__":
-    main()

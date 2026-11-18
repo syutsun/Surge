@@ -107,32 +107,11 @@ def merge_rules(upstream, personal):
     return result
 
 
-# Local filenames stay stable even when upstream renames a service.
-MIRRORS = {
-    "Disney+.list": ("Disney+.list", "# > Disney+"),
-    "HBO-Asia.list": ("HBO-Asia.list", "# > HBO Asia"),
-    "HBO.list": ("Max.list", "# > Max"),
-    "Netflix.list": ("Netflix.list", "# > Netflix"),
-    "TikTok.list": ("TikTok.list", "# > TikTok"),
-    "YouTube.list": ("YouTube.list", "# > YouTube"),
-}
-VIDEO_SOURCE = "https://raw.githubusercontent.com/ConnersHua/RuleGo/master/Surge/Ruleset/Extra/Streaming/Video/"
-
-
-def build_outputs(upstream, personal, mirrors, spotify_upstream):
-    # Validate every download before writing any output.
-    outputs = {str(OUTPUT): comment_youtube(merge_rules(upstream, personal)).encode("utf-8")}
-    outputs["Ruleset/Streaming/Spotify.list"] = add_spotify_rules(spotify_upstream, personal).encode("utf-8")
-    if set(mirrors) != set(MIRRORS):
-        raise ValueError("Missing or unexpected standalone mirror")
-    for local, (_, header) in MIRRORS.items():
-        data = mirrors[local]
-        text = data.decode("utf-8")
-        if text.splitlines()[0] != header:
-            raise ValueError("Wrong upstream service for " + local)
-        validate_rules(text, 1)
-        outputs["Ruleset/Streaming/" + local] = data
-    return outputs
+def build_outputs(upstream, personal, spotify_upstream):
+    return {
+        str(OUTPUT): comment_youtube(merge_rules(upstream, personal)).encode("utf-8"),
+        "Ruleset/Streaming/Spotify.list": add_spotify_rules(spotify_upstream, personal).encode("utf-8"),
+    }
 
 
 def download(url):
@@ -150,9 +129,8 @@ def download(url):
 def main():
     personal = PERSONAL.read_bytes().decode("utf-8")
     data = download(SOURCE)
-    mirrors = {local: download(VIDEO_SOURCE + name) for local, (name, _) in MIRRORS.items()}
     spotify_upstream = download(SPOTIFY_SOURCE).decode("utf-8")
-    outputs = build_outputs(data.decode("utf-8"), personal, mirrors, spotify_upstream)
+    outputs = build_outputs(data.decode("utf-8"), personal, spotify_upstream)
     for name, content in outputs.items():
         path = Path(name)
         path.parent.mkdir(parents=True, exist_ok=True)
